@@ -1,12 +1,9 @@
 import React from 'react';
 import './App.css';
+import ChatBox from "./components/chat/Chatbox";
 
 function App() {
-  return (
-    <div className="App">
-     Frontend on localhost:3000
-    </div>
-  );
+   return <ChatBox />;
 }
 
 export default App;
