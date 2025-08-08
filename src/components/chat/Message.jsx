@@ -45,7 +45,7 @@ const Time = styled(Typography)`
 
 export const Message = ({message})=>{
 
-    const {account} =  useContext(AccountContext);
+const account = { userId: 'dummyUser', name: 'Jaydip Gadhavi' };
 
     return(
         <>
