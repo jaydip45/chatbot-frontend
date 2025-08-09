@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
-import ChatBox from "./components/chat/Chatbox";
+import ChatWidget from "./components/ChatWidget";
 
 function App() {
-   return <ChatBox />;
+   return(
+   <div>
+      <h1>Website Content</h1>
+      <ChatWidget />
+    </div>
+   )
 }
 
 export default App;
