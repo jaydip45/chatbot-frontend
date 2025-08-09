@@ -1,23 +1,50 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
+import { createConversation, sendMessage } from "../api";
 import "../assets/style.css";
 
 export default function ChatWindow({ onClose }) {
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hi there!", sender: "agent", time: "1 minute" },
-    { id: 2, text: "How can I help you?", sender: "agent", time: "1 minute" }
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [conversationId, setConversationId] = useState(null);
 
-  const handleSend = (text) => {
-    const newMessage = {
+  const senderId = "USER123";
+
+  useEffect(() => {
+    const initConversation = async () => {
+      try {
+        const res = await createConversation({ senderId });
+        console.log("Conversation response:", res.data);
+        if (res.data._id) {
+          setConversationId(res.data._id);
+        }
+      } catch (err) {
+        console.error("Error creating conversation:", err);
+      }
+    };
+    initConversation();
+  }, [senderId]);
+
+  const handleSend = async (text) => {
+    if (!conversationId) {
+      console.warn("No conversation ID yet");
+      return;
+    }
+
+    const newMessageObj = {
       id: Date.now(),
       text,
       sender: "user",
       time: "just now"
     };
-    setMessages((prev) => [...prev, newMessage]);
-    // TODO: Send to backend
+
+    setMessages((prev) => [...prev, newMessageObj]);
+
+    try {
+      await sendMessage({ conversationId, senderId, text });
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
   };
 
   return (
@@ -28,7 +55,6 @@ export default function ChatWindow({ onClose }) {
       </div>
 
       <MessageList messages={messages} />
-
       <MessageInput onSend={handleSend} />
     </div>
   );

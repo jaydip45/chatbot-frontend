@@ -1,35 +1,35 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { takeLatest, call, put } from 'redux-saga/effects';
 import {
-  FETCH_MESSAGES_REQUEST,
-  SEND_MESSAGE_REQUEST
-} from "./appTypes";
+    CREATE_CONVERSATION_REQUEST,
+    SEND_MESSAGE_REQUEST
+} from './appTypes';
 import {
-  fetchMessagesSuccess,
-  fetchMessagesFailure,
-  sendMessageSuccess,
-  sendMessageFailure
-} from "./appActions";
-import { getMessages, newMessage } from "../../api/index";
+    createConversationSuccess,
+    createConversationFailure,
+    sendMessageSuccess,
+    sendMessageFailure
+} from './appActions';
+import { createConversation, sendMessage } from './../../api/index';
 
-function* fetchMessagesSaga(action) {
-  try {
-    const response = yield call(getMessages, action.payload);
-    yield put(fetchMessagesSuccess(response.data));
-  } catch (error) {
-    yield put(fetchMessagesFailure(error.message));
-  }
+function* handleCreateConversation(action) {
+    try {
+        const { data } = yield call(createConversation, action.payload);
+        yield put(createConversationSuccess(data));
+    } catch (error) {
+        yield put(createConversationFailure(error.message));
+    }
 }
 
-function* sendMessageSaga(action) {
-  try {
-    const response = yield call(newMessage, action.payload);
-    yield put(sendMessageSuccess(response.data));
-  } catch (error) {
-    yield put(sendMessageFailure(error.message));
-  }
+function* handleSendMessage(action) {
+    try {
+        const { data } = yield call(sendMessage, action.payload);
+        yield put(sendMessageSuccess(data));
+    } catch (error) {
+        yield put(sendMessageFailure(error.message));
+    }
 }
 
-export default function* messageSaga() {
-  yield takeLatest(FETCH_MESSAGES_REQUEST, fetchMessagesSaga);
-  yield takeLatest(SEND_MESSAGE_REQUEST, sendMessageSaga);
+export default function* appSaga() {
+    yield takeLatest(CREATE_CONVERSATION_REQUEST, handleCreateConversation);
+    yield takeLatest(SEND_MESSAGE_REQUEST, handleSendMessage);
 }

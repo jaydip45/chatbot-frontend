@@ -1,8 +1,9 @@
-import api from "./api";
+import axios from 'axios';
 
-export const addUser = (payload) => api.post("/add", payload);
-export const getUsers = () => api.get("/users");
-export const newConversation = (payload) => api.post("/conversation/add", payload);
-export const getConversation = (payload) => api.post("/conversation/get", payload);
-export const newMessage = (payload) => api.post("/message/add", payload);
-export const getMessages = (id) => api.get(`/message/get/${id}`);
+const API_BASE = 'http://localhost:5000';
+
+export const createConversation = (data) =>
+  axios.post(`${API_BASE}/conversation/add`, data);
+
+export const sendMessage = (data) =>
+  axios.post(`${API_BASE}/message/add`, data);

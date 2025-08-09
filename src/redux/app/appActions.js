@@ -1,34 +1,40 @@
 import {
-  FETCH_MESSAGES_REQUEST,
-  FETCH_MESSAGES_SUCCESS,
-  FETCH_MESSAGES_FAILURE,
-  SEND_MESSAGE_REQUEST,
-  SEND_MESSAGE_SUCCESS,
-  SEND_MESSAGE_FAILURE
-} from "./appTypes";
+    CREATE_CONVERSATION_REQUEST,
+    CREATE_CONVERSATION_SUCCESS,
+    CREATE_CONVERSATION_FAILURE,
+    SEND_MESSAGE_REQUEST,
+    SEND_MESSAGE_SUCCESS,
+    SEND_MESSAGE_FAILURE
+} from './appTypes';
 
-export const fetchMessagesRequest = (conversationId) => ({
-  type: FETCH_MESSAGES_REQUEST,
-  payload: conversationId
-});
-export const fetchMessagesSuccess = (messages) => ({
-  type: FETCH_MESSAGES_SUCCESS,
-  payload: messages
-});
-export const fetchMessagesFailure = (error) => ({
-  type: FETCH_MESSAGES_FAILURE,
-  payload: error
+// Conversation
+export const createConversationRequest = (payload) => ({
+    type: CREATE_CONVERSATION_REQUEST,
+    payload
 });
 
-export const sendMessageRequest = (messageData) => ({
-  type: SEND_MESSAGE_REQUEST,
-  payload: messageData
+export const createConversationSuccess = (data) => ({
+    type: CREATE_CONVERSATION_SUCCESS,
+    payload: data
 });
-export const sendMessageSuccess = (message) => ({
-  type: SEND_MESSAGE_SUCCESS,
-  payload: message
+
+export const createConversationFailure = (error) => ({
+    type: CREATE_CONVERSATION_FAILURE,
+    payload: error
 });
+
+// Message
+export const sendMessageRequest = (payload) => ({
+    type: SEND_MESSAGE_REQUEST,
+    payload
+});
+
+export const sendMessageSuccess = (data) => ({
+    type: SEND_MESSAGE_SUCCESS,
+    payload: data
+});
+
 export const sendMessageFailure = (error) => ({
-  type: SEND_MESSAGE_FAILURE,
-  payload: error
+    type: SEND_MESSAGE_FAILURE,
+    payload: error
 });
