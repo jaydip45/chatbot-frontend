@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import "../assets/style.css";
 
 export default function MessageList({ messages }) {
   const listRef = useRef();
@@ -12,10 +13,11 @@ export default function MessageList({ messages }) {
       {messages.map((msg) => (
         <div
           key={msg.id}
-          className={`message ${msg.sender === "user" ? "user" : "agent"}`}
+          className={`message ${msg.senderType === "user" ? "user" : "agent"}`}
         >
           <div className="text">{msg.text}</div>
-          <div className="time">{msg.time}</div>
+          <div className="time">    {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString() : ""}
+          </div>
         </div>
       ))}
     </div>

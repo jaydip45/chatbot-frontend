@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 import ChatWidget from "./components/ChatWidget";
 import AdminLogin from './admin/AdminLogin';
+import AdminDashboard from './admin/AdminDashboard';
 import AdminProtectedRoute from './admin/AdminProtectedRoute';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
                path="/admin/*"
                element={
                   <AdminProtectedRoute>
-                     {/* <AdminDashboard /> */}
+                     <AdminDashboard />
                   </AdminProtectedRoute>
                }
             />

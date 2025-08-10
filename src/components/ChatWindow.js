@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import socket from "../socket"; 
+import socket from "../socket";
 import { createConversationRequest, sendMessageRequest } from "../redux/app/appActions";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
+import "../assets/style.css";
 
 export default function ChatWindow({ onClose }) {
   const dispatch = useDispatch();
@@ -17,45 +18,49 @@ export default function ChatWindow({ onClose }) {
     }
   }, [conversation]);
 
- useEffect(() => {
-  if (!user?._id || !conversation?._id) return;
+  useEffect(() => {
+    if (!user?._id || !conversation?._id) return;
 
-  socket.connect();
-  socket.emit("joinConversation", conversation._id);
+    socket.connect();
+    socket.emit("joinConversation", conversation._id);
 
-  socket.on("receiveMessage", (message) => {
-    console.log("Socket message received:", message);
-    setMessages((prev) => [...prev, message]);
-  });
-
-  return () => {
-    socket.off("receiveMessage");
-    socket.disconnect();
-  };
-}, [user?._id, conversation?._id]);
-
-const handleSend = () => {
-  if (!input.trim()) return;
-
-  if (!conversation) {
-    dispatch(createConversationRequest({ senderId: user._id, firstMessage: input }));
-  } else {
-    dispatch(sendMessageRequest({
-      conversationId: conversation._id,
-      senderId: user._id,
-      text: input,
-    }));
-
-    socket.emit("sendMessage", {
-      conversationId: conversation._id,
-      senderId: user._id,
-      text: input,
+    socket.on("receiveMessage", (message) => {
+      setMessages((prev) => {
+        if (prev.some(m => m._id === message._id)) return prev;
+        return [...prev, message];
+      });
     });
-  }
 
-  setInput("");
-};
+    return () => {
+      socket.off("receiveMessage");
+      socket.disconnect();
+    };
+  }, [user?._id, conversation?._id]);
 
+  const handleSend = () => {
+    if (!input.trim()) return;
+
+    if (!conversation) {
+      dispatch(createConversationRequest({ senderId: user._id, firstMessage: input }));
+    } else {
+      dispatch(sendMessageRequest({
+        conversationId: conversation._id,
+        senderId: user._id,
+        text: input,
+        senderType: "user"
+      }));
+
+      socket.emit("sendMessage", {
+        conversationId: conversation._id,
+        senderId: user._id,
+        text: input,
+        senderType: "user"
+      });
+
+    }
+
+    setInput("");
+  };
 
   return (
     <div className="chat-window">
