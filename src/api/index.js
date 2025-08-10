@@ -10,3 +10,9 @@ export const sendMessage = (data) =>
 
 export const addUser = (data) =>
   axios.post(`${API_BASE}/add`, data);
+
+
+//admin API
+
+export const adminLogin = (data) =>
+ axios.post(`${API_BASE}/login`, data);
