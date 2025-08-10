@@ -4,7 +4,8 @@ import {
     CREATE_CONVERSATION_FAILURE,
     SEND_MESSAGE_REQUEST,
     SEND_MESSAGE_SUCCESS,
-    SEND_MESSAGE_FAILURE
+    SEND_MESSAGE_FAILURE,
+    CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_FAILURE
 } from './appTypes';
 
 // Conversation
@@ -37,4 +38,19 @@ export const sendMessageSuccess = (data) => ({
 export const sendMessageFailure = (error) => ({
     type: SEND_MESSAGE_FAILURE,
     payload: error
+});
+
+export const createUserRequest = (payload) => ({
+  type: CREATE_USER_REQUEST,
+  payload,
+});
+
+export const createUserSuccess = (user) => ({
+  type: CREATE_USER_SUCCESS,
+  payload: user,
+});
+
+export const createUserFailure = (error) => ({
+  type: CREATE_USER_FAILURE,
+  payload: error,
 });

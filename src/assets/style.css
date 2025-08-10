@@ -18,6 +18,7 @@
   bottom: 80px;
   right: 20px;
   width: 300px;
+   height: 400px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -39,6 +40,10 @@
   padding: 10px;
   overflow-y: auto;
   background: #f9f9f9;
+}
+
+.message-list::-webkit-scrollbar {
+  display: none;
 }
 
 .message {

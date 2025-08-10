@@ -1,49 +1,32 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
-import { createConversation, sendMessage } from "../api";
-import "../assets/style.css";
+import { createConversationRequest, sendMessageRequest } from "../redux/app/appActions";
 
 export default function ChatWindow({ onClose }) {
+  const dispatch = useDispatch();
+  const { user, conversation, loading } = useSelector((state) => state.app);
   const [messages, setMessages] = useState([]);
-  const [conversationId, setConversationId] = useState(null);
 
-  const senderId = "USER123";
-
+  // Sync messages from Redux conversation
   useEffect(() => {
-    const initConversation = async () => {
-      try {
-        const res = await createConversation({ senderId });
-        console.log("Conversation response:", res.data);
-        if (res.data._id) {
-          setConversationId(res.data._id);
-        }
-      } catch (err) {
-        console.error("Error creating conversation:", err);
-      }
-    };
-    initConversation();
-  }, [senderId]);
-
-  const handleSend = async (text) => {
-    if (!conversationId) {
-      console.warn("No conversation ID yet");
-      return;
+    if (conversation?.messages) {
+      setMessages(conversation.messages);
     }
+  }, [conversation]);
 
-    const newMessageObj = {
-      id: Date.now(),
-      text,
-      sender: "user",
-      time: "just now"
-    };
+  const handleSend = (text) => {
+    if (!text.trim()) return;
 
-    setMessages((prev) => [...prev, newMessageObj]);
-
-    try {
-      await sendMessage({ conversationId, senderId, text });
-    } catch (err) {
-      console.error("Error sending message:", err);
+    if (!conversation) {
+      dispatch(createConversationRequest({ senderId: user._id, firstMessage: text }));
+    } else {
+      dispatch(sendMessageRequest({
+        conversationId: conversation._id,
+        senderId: user._id,
+        text,
+      }));
     }
   };
 
@@ -53,7 +36,6 @@ export default function ChatWindow({ onClose }) {
         <span>Chatbot</span>
         <button onClick={onClose}>✖</button>
       </div>
-
       <MessageList messages={messages} />
       <MessageInput onSend={handleSend} />
     </div>

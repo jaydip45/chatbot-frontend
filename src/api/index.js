@@ -7,3 +7,6 @@ export const createConversation = (data) =>
 
 export const sendMessage = (data) =>
   axios.post(`${API_BASE}/message/add`, data);
+
+export const addUser = (data) =>
+  axios.post(`${API_BASE}/add`, data);
