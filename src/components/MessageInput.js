@@ -1,12 +1,7 @@
-import { useState } from "react";
-
-export default function MessageInput({ onSend }) {
-  const [value, setValue] = useState("");
-
+export default function MessageInput({ value, onChange, onSend }) {
   const handleSend = () => {
     if (value.trim()) {
-      onSend(value);
-      setValue("");
+      onSend();
     }
   };
 
@@ -16,10 +11,11 @@ export default function MessageInput({ onSend }) {
         type="text"
         placeholder="Type a message..."
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSend()}
       />
       <button onClick={handleSend}>Send</button>
     </div>
   );
 }
+
